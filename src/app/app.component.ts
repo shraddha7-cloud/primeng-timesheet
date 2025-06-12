@@ -1,12 +1,52 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
+import { TimesheetGridComponent } from './components/timesheet-grid/timesheet-grid.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  standalone: true,
+  imports: [ButtonModule, TimesheetGridComponent],
+//   templateUrl: './app.component.html',
+  template: `<app-timesheet-grid></app-timesheet-grid>`
 })
-export class AppComponent {
-  title = 'primeng-timesheet';
+export class AppComponent implements OnInit {
+    ngOnInit(): void {
+      // Component initialization
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
