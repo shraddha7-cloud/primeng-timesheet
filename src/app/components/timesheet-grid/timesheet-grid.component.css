@@ -1,0 +1,104 @@
+/* Column highlighting for Thu and Fri */
+:host ::ng-deep tr th:nth-child(6), /* Thursday column */
+:host ::ng-deep tr td:nth-child(6) {
+  background-color: #e6f2ff !important;
+}
+
+:host ::ng-deep tr th:nth-child(7), /* Friday column */
+:host ::ng-deep tr td:nth-child(7) {
+  background-color: #ffe6e6 !important;
+}
+
+/* Task styling */
+:host ::ng-deep .task-row {
+  background-color: #ffffff;
+}
+
+/* Billability pill styling */
+.billability-pill {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  width: 40px;
+  margin: 0 auto;
+}
+
+.billability-pill.yes {
+  background-color: #e6f4ea;
+  color: #2e7d32;
+}
+
+.billability-pill.no {
+  background-color: #ffe6e6;
+  color: #c62828;
+}
+
+/* Hour inputs */
+.hours-input {
+  width: 100%;
+  border: none;
+  text-align: center;
+  background-color: transparent;
+}
+
+/* Time value alignment */
+.time-cell {
+  text-align: center !important;
+  min-width: 80px;
+}
+
+.time-input {
+  width: 80px;
+  text-align: center;
+  border: none;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 4px;
+  font-size: 14px;
+  background-color: transparent;
+  outline: none;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Consistent input styling */
+.input-cell {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 4px 8px;
+  text-align: center;
+  font-size: 14px;
+  background-color: transparent;
+  outline: none;
+}
+
+/* Add task link */
+.add-task-link {
+  color: #007bff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Table styling to remove dark borders */
+:host ::ng-deep .p-datatable {
+  border: none;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  border: none;
+  border-bottom: 1px solid #e6e6e6;
+  font-weight: 600;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  border: none;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr:last-child > td {
+  border-bottom: none;
+}

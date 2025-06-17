@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { ProductService } from '../../services/product.service';
-import { Product } from '../../model/product.model';
+import { ProjectService } from '../../services/project.service';
+import {Project } from '../../model/project.model';
 import { FormsModule } from '@angular/forms';
 
 import { TagModule } from 'primeng/tag';
@@ -21,33 +21,39 @@ import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
   standalone: true,
   imports: [TableModule, TagModule, RatingModule, CommonModule, ButtonModule, ToastModule, FormsModule],
   templateUrl: './timesheet-grid.component.html',
-  styleUrls: ['./timesheet-grid.component.css'],
-providers: [ProductService, MessageService]
+  styleUrls: ['./timesheet-grid.component.css'],              
+providers: [ProjectService, MessageService]
 })
 export class TimesheetGridComponent implements OnInit {
 
-  products!: Product[];
+  projects!: Project[];
 
-    expandedRows = {};
+    expandedRows = {};  
+// days: any;
+days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];         
 
-  constructor(private productService: ProductService, private messageService: MessageService) {}
 
-  ngOnInit(): void {
-      this.productService.getProductsWithOrdersSmall().then((data) => (this.products = data));
-    }
+  constructor(private projectService: ProjectService, private messageService: MessageService) {}
 
+ ngOnInit(): void {
+  this.projectService.getProjects().subscribe((data: Project[]) => {
+    this.projects = data;     
+  });
+}
+
+                     
     expandAll() {
-  this.expandedRows = this.products.reduce((acc: { [key: string]: boolean }, p) => {
+  this.expandedRows = this.projects.reduce((acc: { [key: string]: boolean }, p) => {
     acc[p.id] = true;
-    return acc;
+    return acc;   
   }, {});
 }
 
-
-    collapseAll() {
+     
+    collapseAll() { 
         this.expandedRows = {};
     }    getSeverity(status: string) {
-        switch (status) {
+        switch (status) {  
             case 'INSTOCK':
                 return 'success';
             case 'LOWSTOCK':
@@ -77,6 +83,26 @@ export class TimesheetGridComponent implements OnInit {
     onRowCollapse(event: TableRowCollapseEvent) {
         this.messageService.add({ severity: 'success', summary: 'Product Collapsed', detail: event.data.name, life: 3000 });
     }
+
+
+calculateProjectTotal(project: Project, day: string): string {
+  let totalMinutes = 0;
+
+  project.tasks?.forEach(task => {
+    const timeStr = task.hours?.[day];
+
+    if (typeof timeStr === 'string' && timeStr.includes(':')) {
+      const [hrs, mins] = timeStr.split(':').map(Number);
+      totalMinutes += hrs * 60 + mins;
+    }
+  }); 
+
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+}
+
+
 }
 
 

@@ -1,0 +1,81 @@
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background-color: white;
+    border-right: 1px solid #e0e0e0;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.logo {
+    padding: 0 20px 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 20px;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.pro-badge {
+    background-color: #da291c;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 3px;
+    position: relative;
+    top: -8px;
+}
+
+.copilot-text {
+    font-size: 16px;
+    color: #666;
+    margin-left: auto;
+}
+
+.nav-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    margin-bottom: 2px;
+    position: relative;
+    color: #555;
+}
+
+.nav-item i {
+    margin-right: 12px;
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+
+.nav-item .arrow {
+    margin-left: auto;
+    margin-right: 0;
+    font-size: 14px;
+}
+
+.nav-item.active {
+    color: #0078d7;
+    background-color: #f0f7ff;
+    border-left: 3px solid #0078d7;
+    padding-left: 17px; /* 20px - 3px border */
+}
+
+.nav-item:hover:not(.active) {
+    background-color: #f9f9f9;
+}
