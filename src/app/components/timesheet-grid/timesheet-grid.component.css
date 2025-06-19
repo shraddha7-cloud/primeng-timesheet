@@ -1,14 +1,3 @@
-/* Column highlighting for Thu and Fri */
-:host ::ng-deep tr th:nth-child(6), /* Thursday column */
-:host ::ng-deep tr td:nth-child(6) {
-  background-color: #e6f2ff !important;
-}
-
-:host ::ng-deep tr th:nth-child(7), /* Friday column */
-:host ::ng-deep tr td:nth-child(7) {
-  background-color: #ffe6e6 !important;
-}
-
 /* Task styling */
 :host ::ng-deep .task-row {
   background-color: #ffffff;

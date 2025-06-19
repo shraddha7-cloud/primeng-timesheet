@@ -16,13 +16,14 @@
       <th style="width: 200px">Projects / Tasks</th>
       <th style="width: 180px">Description</th>
       <th style="width: 120px">Billability</th>
-      <th *ngFor="let day of days" style="width: 100px">
-        {{ day }}<br><small>Apr {{ 14 + days.indexOf(day) }}</small>
-      </th>
+    <th *ngFor="let d of daysOfWeek" style="width: 100px">
+  {{ d.day }}<br /><small>{{ d.date }}</small>
+</th>
+
     </tr>
   </ng-template>
 
-  <!-- Project Row -->
+  <!-- Project Row -->  
   <ng-template #body let-project let-expanded="expanded">
     <tr>
       <td>
@@ -38,9 +39,10 @@
       <td></td>      <td>
         <p-inputSwitch [(ngModel)]="project.billable" [style]="{ 'transform': 'scale(0.8)' }"></p-inputSwitch>
       </td>
-      <td *ngFor="let day of days" class="time-cell">
-        {{ calculateProjectTotal(project, day) }}
-      </td>
+      <td *ngFor="let d of daysOfWeek" class="time-cell">
+  {{ calculateProjectTotal(project, d.day) }}
+</td>
+
     </tr>
     <tr>
       <td></td>
@@ -49,9 +51,9 @@
       </td>
     </tr>
   </ng-template>
-
+                       
   <!-- Task Row (Expandable) -->
-<ng-template #expandedrow let-project>
+<ng-template #expandedrow let-project>  
   <tr *ngFor="let task of project.tasks" class="align-middle border-t border-gray-200 text-sm">
     <td></td>
     <!-- Task Name with Pencil -->
@@ -63,6 +65,7 @@
     </td>    <!-- Description -->
     <td>   
       <input type="text"
+      
              [(ngModel)]="task.description" 
              placeholder="Description"
              class="input-cell" style="text-align: left;" />
@@ -71,9 +74,9 @@
     <td>
       <p-inputSwitch [(ngModel)]="task.billable" [style]="{ 'transform': 'scale(0.8)' }"></p-inputSwitch>
     </td>    <!-- Hours for Each Day -->
-    <td *ngFor="let day of days" class="time-cell">
+    <td *ngFor="let d of daysOfWeek" class="time-cell">
       <input type="text"
-             [(ngModel)]="task.hours[day]"
+             [(ngModel)]="task.hours[d.day]"
              placeholder="00:00"
              class="time-input" />
     </td>
@@ -81,3 +84,4 @@
 </ng-template>
 
 </p-table>
+

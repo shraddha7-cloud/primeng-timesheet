@@ -30,16 +30,68 @@ export class TimesheetGridComponent implements OnInit {
 
     expandedRows = {};  
 // days: any;
-days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];         
+daysOfWeek: { day: string; date: string }[] = [];
+
+        
+weekStartDate: Date = new Date(); // Default to today
 
 
   constructor(private projectService: ProjectService, private messageService: MessageService) {}
 
  ngOnInit(): void {
   this.projectService.getProjects().subscribe((data: Project[]) => {
-    this.projects = data;     
+    this.projects = data;
+    this.daysOfWeek = this.getWeekDates(this.weekStartDate);
+
+
   });
 }
+
+
+
+getWeekDates(startDate: Date): { day: string, date: string }[] {
+  const week: { day: string, date: string }[] = [];
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+  const monday = new Date(startDate);
+  monday.setDate(monday.getDate() - monday.getDay() + 1); // Get this week's Monday
+
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(monday);
+    date.setDate(monday.getDate() + i);
+    week.push({
+      day: days[i],
+      date: date.toLocaleDateString('en-US', { day: '2-digit', month: 'short' }) // e.g., Apr 14
+    });
+  }
+
+  return week;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                      
     expandAll() {

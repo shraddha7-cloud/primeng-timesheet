@@ -1,0 +1,64 @@
+<div class="top-nav-container">
+  <div class="timesheet-header">
+    <h1>Timesheet | My Timesheet - Week</h1>
+    
+    <div class="user-actions">
+      <button pButton icon="pi pi-cog" class="p-button-text p-button-rounded"></button>
+      <button pButton icon="pi pi-question" class="p-button-text p-button-rounded"></button>
+      <button pButton icon="pi pi-download" class="p-button-text p-button-rounded"></button>
+      <button pButton icon="pi pi-bell" class="p-button-text p-button-rounded"></button>
+      <div class="user-profile">
+        <span>Shraddha Gaikwad</span>
+        <button pButton icon="pi pi-user" class="p-button-text p-button-rounded"></button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="timesheet-tabs">
+    <ul class="tab-list">
+      <li class="tab-item active">
+        <i class="pi pi-calendar"></i> My Timesheet
+      </li>
+      <li class="tab-item">
+        <i class="pi pi-send"></i> Submitted Timesheet
+      </li>
+    </ul>
+  </div>
+  
+  <div class="timesheet-controls">
+    <div class="view-controls">
+      <button class="view-button">Month</button>
+      <button class="view-button active">Week</button>
+      <button class="view-button">Day</button>
+    </div>
+      <div class="date-navigation">
+      <button pButton icon="pi pi-chevron-left" class="p-button-text" (click)="previousWeek()"></button>
+      <span class="date-range">{{ formatDateRange() }}</span>
+      <button pButton icon="pi pi-chevron-right" class="p-button-text" (click)="nextWeek()"></button>
+      <button pButton icon="pi pi-calendar" class="p-button-text" (click)="calendarVisible = !calendarVisible"></button>
+      <div *ngIf="calendarVisible" class="calendar-popup">
+        <p-calendar [(ngModel)]="selectedDate" 
+                   [inline]="true" 
+                   [showWeek]="true"
+                   (onSelect)="onDateSelect()"></p-calendar>
+      </div>
+    </div>
+    
+    <div class="hours-summary">
+      <div class="hours-logged">
+        <div class="hours-value">{{ loggedHours }} hrs</div>
+        <div class="hours-label">Logged Hours</div>
+      </div>
+      <div class="hours-submitted">
+        <div class="hours-value">{{ submittedHours }} hrs</div>
+        <div class="hours-label">Submitted Hours</div>
+      </div>
+    </div>    <div class="submit-section">
+      <div class="combined-button">
+        <button pButton label="Submit" class="submit-button" (click)="submitTimesheet()"></button>
+        <div class="divider"></div>
+        <button pButton icon="pi pi-chevron-down" class="arrow-button"></button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,230 @@
+.top-nav-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.timesheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.timesheet-header h1 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
+  border-left: 1px solid #f0f0f0;
+  padding-left: 0.5rem;
+}
+
+.timesheet-tabs {
+  padding: 0 1rem;
+}
+
+.tab-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.tab-item {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tab-item.active {
+  border-bottom: 2px solid #3B82F6;
+  margin-bottom: -2px;
+  color: #3B82F6;
+  font-weight: 500;
+}
+
+.timesheet-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.view-controls {
+  display: flex;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.view-button {
+  padding: 0.4rem 0.75rem;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.view-button.active {
+  background-color: #3B82F6;
+  color: white;
+}
+
+.date-navigation {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.date-range {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.calendar-popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 8px;
+  padding: 8px;
+}
+
+/* Style the calendar component */
+:host ::ng-deep .p-calendar {
+  font-size: 0.9rem;
+}
+
+:host ::ng-deep .p-calendar .p-datepicker {
+  min-width: 300px;
+}
+
+:host ::ng-deep .p-datepicker .p-datepicker-header {
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+:host ::ng-deep .p-datepicker table {
+  margin: 0.5rem 0;
+}
+
+:host ::ng-deep .p-datepicker table td {
+  padding: 0.25rem;
+}
+
+:host ::ng-deep .p-datepicker table td > span.p-highlight {
+  background-color: #2196F3;
+}
+
+:host ::ng-deep .p-datepicker table td.p-datepicker-today > span {
+  border-color: #2196F3;
+  color: #2196F3;
+}
+
+.hours-summary {
+  display: flex;
+  gap: 1rem;
+}
+
+.hours-logged, .hours-submitted {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.hours-logged {
+  border-right: 2px solid #f0f0f0;
+}
+
+.hours-value {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.hours-logged .hours-value {
+  color: #FF4081;
+}
+
+.hours-submitted .hours-value {
+  color: #4CAF50;
+}
+
+.hours-label {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+.submit-section {
+  display: flex;
+}
+
+.combined-button {
+  display: flex;
+  background-color: #2196F3;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(33, 150, 243, 0.3);
+}
+
+.combined-button:hover {
+  background-color: #1E88E5;
+  box-shadow: 0 3px 8px rgba(33, 150, 243, 0.4);
+}
+
+.submit-button {
+  background-color: transparent !important;
+  color: #FFFFFF !important;
+  font-weight: 500;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0.5rem 1rem !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+
+.divider {
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.arrow-button {
+  background-color: transparent !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  border-radius: 0 !important;
+  width: 32px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: none !important;
+}
