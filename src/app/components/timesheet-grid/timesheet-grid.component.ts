@@ -13,13 +13,14 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 
-
+import { TaskFormComponent } from '../task-form/task-form.component';
+import { Task } from '../../model/project.model';
 
 
 @Component({
   selector: 'app-timesheet-grid',
   standalone: true,
-  imports: [TableModule, TagModule, RatingModule, CommonModule, ButtonModule, ToastModule, FormsModule],
+  imports: [TableModule, TagModule, RatingModule, CommonModule, ButtonModule, ToastModule, FormsModule, TaskFormComponent],
   templateUrl: './timesheet-grid.component.html',
   styleUrls: ['./timesheet-grid.component.css'],              
 providers: [ProjectService, MessageService]
@@ -153,6 +154,60 @@ calculateProjectTotal(project: Project, day: string): string {
   const minutes = totalMinutes % 60;
   return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 }
+
+
+
+
+
+
+showTaskForm = false;
+// ...existing code...
+
+handleTaskSave(taskData: any) {
+  // Find the project by id instead of name
+  const selectedProject = this.projects.find(p => p.id === taskData.project.id);
+  
+  if (selectedProject) {
+    selectedProject.tasks = selectedProject.tasks || [];
+    
+    // Create a new task with properly initialized hours object for all days
+    const newTask: Task = {
+      id: Date.now(), // Generate a temporary unique ID
+      name: taskData.name,
+      description: taskData.description,
+      billable: taskData.billable,
+      status: taskData.status,
+      category: taskData.category,
+      hours: {} as { [day: string]: string }
+    };
+    
+    // Initialize hours for each day of the week
+    this.daysOfWeek.forEach(day => {
+      newTask.hours[day.day] = '00:00';
+    });
+    
+    // Add the new task to the project
+    selectedProject.tasks.push(newTask);
+    
+    // Show success message
+    this.messageService.add({ 
+      severity: 'success', 
+      summary: 'Task Added', 
+      detail: `Task "${newTask.name}" added to project "${selectedProject.name}"`, 
+      life: 3000 
+    });
+  }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 }

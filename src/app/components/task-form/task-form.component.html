@@ -1,0 +1,79 @@
+
+<div class="offcanvas offcanvas-end show" tabindex="-1" [ngClass]="{ 'd-block': visible }" style="visibility: visible;" *ngIf="visible">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">New Task</h5>
+    <button type="button" class="btn-close text-reset" (click)="onClose()"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form #taskForm="ngForm" (ngSubmit)="saveTask()">
+      <!-- Project Dropdown -->
+      <div class="mb-3">
+        <label for="project">Projects <span class="text-danger">*</span></label>
+        <select class="form-select" id="project" [(ngModel)]="task.project" name="project" required>
+          <option *ngFor="let p of availableProjects" [ngValue]="p">{{ p.name }}</option>
+        </select>
+      </div>
+
+      <!-- Task Category -->
+      <div class="mb-3">
+        <label for="category">Task Category <span class="text-danger">*</span></label>
+        <select class="form-select" id="category" [(ngModel)]="task.category" name="category" required>
+          <option value="" disabled selected>Select Task Category</option>
+          <option value="Development">Development</option>
+          <option value="Testing">Testing</option>
+          <option value="Documentation">Documentation</option>
+        </select>
+      </div>
+
+      <!-- Task Name -->
+      <div class="mb-3">
+        <label for="taskName">Task Name <span class="text-danger">*</span></label>
+        <select class="form-select" id="taskName" [(ngModel)]="task.name" name="name" required>
+          <option value="" disabled selected>Select Task Name</option>
+          <option value="Build Login Page">Build Login Page</option>
+          <option value="Bug Fixes">Bug Fixes</option>
+          <option value="Create Report">Create Report</option>
+        </select>
+      </div>
+
+      <!-- Billability & Status -->
+      <div class="row mb-3">
+        <div class="col">
+          <label>Billability (Jun {{ today }}) <span class="text-danger">*</span></label>
+          <select class="form-select" [(ngModel)]="task.billable" name="billable" required>
+            <option [ngValue]="false">Non-Billable</option>
+            <option [ngValue]="true">Billable</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Task Status <span class="text-danger">*</span></label>
+          <select class="form-select" [(ngModel)]="task.status" name="status" required>
+            <option value="" disabled selected>Select Task Status</option>
+            <option value="Not Started">Not Started</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label>Description (Jun {{ today }}) <span class="text-danger">*</span></label>
+        <textarea class="form-control" [(ngModel)]="task.description" name="description" placeholder="Add Task Description" required></textarea>
+      </div>
+
+      <!-- Comment -->
+      <div class="mb-3">
+        <label>Comment</label>
+        <textarea class="form-control" [(ngModel)]="task.comment" name="comment" placeholder="Add comment (if any)"></textarea>
+      </div>
+
+      <!-- Buttons -->
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-outline-danger" (click)="onClose()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+

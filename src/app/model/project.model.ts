@@ -11,16 +11,30 @@
 //   name: string;
 //   tasks: TaskEntry[];
 // }
-export interface Task {
-  id: number;
-  name: string;
-  description: string;
-  billable: boolean;
-  hours: { [day: string]: string }; // <<<<< CRUCIAL!
-}
+
+
+
+
+// export interface Task {
+//   id: number;
+//   name: string;
+//   description: string;
+//   billable: boolean;
+//   hours: { [day: string]: string }; // <<<<< CRUCIAL!
+// }
 
 export interface Project {
   id: number;
   name: string;
   tasks: Task[];
+}
+// In your project.model.ts or create a new task.model.ts
+export interface Task {
+  id: number;
+  name: string;
+  description: string;
+  billable: boolean;
+  status?: string;
+  category?: string;
+  hours: { [day: string]: string };  // This allows string indexing
 }
