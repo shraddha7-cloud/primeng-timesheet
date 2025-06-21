@@ -40,6 +40,7 @@ weekStartDate: Date = new Date(); // Default to today
   constructor(private projectService: ProjectService, private messageService: MessageService) {}
 
  ngOnInit(): void {
+  
   this.projectService.getProjects().subscribe((data: Project[]) => {
     this.projects = data;
     this.daysOfWeek = this.getWeekDates(this.weekStartDate);
@@ -155,7 +156,15 @@ calculateProjectTotal(project: Project, day: string): string {
   return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 }
 
+// Add a property to store the selected project
+selectedProject: any = null;
 
+// Add this new method
+openTaskForm(project: any) {
+    console.log('Opening task form with project:', project);
+  this.selectedProject = project;
+  this.showTaskForm = true;
+}
 
 
 

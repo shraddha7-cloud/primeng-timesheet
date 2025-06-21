@@ -47,7 +47,8 @@
     <tr>
       <td></td>
       <td colspan="10">
-       <a href="#" (click)="showTaskForm = true; $event.preventDefault()">+ Task</a>
+ <a href="#" (click)="openTaskForm(project); $event.preventDefault()">+ Task</a>
+ 
 
       </td>     
     </tr>
@@ -89,6 +90,7 @@
 <app-task-form
   [visible]="showTaskForm"
   [availableProjects]="projects"
+  [currentProject]="selectedProject"
   (close)="showTaskForm = false"
   (save)="handleTaskSave($event)">
 </app-task-form>

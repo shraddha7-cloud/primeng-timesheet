@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgIf, NgClass, CommonModule } from '@angular/common';
 import { InputSwitchModule } from 'primeng/inputswitch';
@@ -11,36 +11,54 @@ import { ButtonModule } from 'primeng/button';
   standalone: true,
   templateUrl: './task-form.component.html',
   styleUrls: ['./task-form.component.css'],
-  imports: [FormsModule, NgIf, NgClass,CommonModule,
+  imports: [FormsModule, NgIf, NgClass, CommonModule,
     FormsModule,
     InputSwitchModule,
     DropdownModule,
+    ButtonModule,
     CalendarModule]
 })
-export class TaskFormComponent {
+export class TaskFormComponent implements OnInit, OnChanges {
   @Input() visible = false;
   @Input() project: any;
   @Input() availableProjects: any[] = [];
+  @Input() currentProject: any = null;
 
-
-  @Output() close = new EventEmitter<void>();  // This is the Output event
+  @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<any>();
 
-task: any = {      
-  project: null,
-  category: '',
-  name: '',
-  billable: false,
-  status: '',
-  description: '',
-  comment: ''
-};
-
+  task: any = {
+    project: null,
+    category: '',
+    name: '',
+    billable: false,
+    status: '',
+    description: '',
+    comment: ''
+  };
      
-today: number = new Date().getDate(); // For dynamic Jun 20 label
+  today: number = new Date().getDate();
 
+  ngOnInit() {
+    console.log('TaskForm initialized, currentProject:', this.currentProject);
+    this.resetForm();
+  }
+    ngOnChanges(changes: SimpleChanges) {
+    // Check if currentProject changed - always update the project
+    if (changes['currentProject']) {
+      console.log('currentProject changed to:', this.currentProject);
+      if (this.currentProject) {
+        this.task.project = this.currentProject;
+      }
+    }
+    
+    // When visible changes to true, reset the form with current project
+    if (changes['visible'] && changes['visible'].currentValue === true) {
+      console.log('Form became visible, currentProject:', this.currentProject);
+      this.resetForm();
+    }
+  }
 
-  // ✅ Renamed this to avoid conflict
   onClose() {
     this.close.emit();
   }
@@ -51,9 +69,18 @@ today: number = new Date().getDate(); // For dynamic Jun 20 label
     this.close.emit();           
     this.resetForm();
   }
-
   resetForm() {
-    this.task = { name: '', description: '', billable: false };
+    // Always use the currentProject that was passed in
+    this.task = {
+      project: this.currentProject,
+      category: '',
+      name: '',
+      billable: false,
+      status: 'Active',
+      description: '',
+      comment: ''
+    };
+    console.log('Form reset with task.project:', this.task.project);
   }
 }
 
