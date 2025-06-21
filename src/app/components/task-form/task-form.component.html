@@ -4,11 +4,11 @@
     <button type="button" class="btn-close text-reset" (click)="onClose()"></button>
   </div>
   <div class="offcanvas-body">
-    <form #taskForm="ngForm" (ngSubmit)="saveTask()">      <!-- Project Name (Read-only) -->
+    <form #taskForm="ngForm" (ngSubmit)="saveTask()">
+      <!-- Project Name (Read-only) -->
       <div class="mb-3">
-        <label>Project <span class="text-danger">*</span></label>
-        <div class="form-control bg-light">{{ task.project?.name || 'No project selected' }}</div>
-        <!-- Hidden input to keep the model binding -->
+        <label for="projectDisplay">Project <span class="text-danger">*</span></label>
+        <div class="form-control bg-light" id="projectDisplay">{{ task.project?.name || 'No project selected' }}</div>        <!-- Hidden input to keep the model binding -->
         <input type="hidden" [(ngModel)]="task.project" name="project" required>
       </div>
 

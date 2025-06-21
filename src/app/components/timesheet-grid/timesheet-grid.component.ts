@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { ProjectService } from '../../services/project.service';
-import {Project } from '../../model/project.model';
+import { Project, Task } from '../../model/project.model';
 import { FormsModule } from '@angular/forms';
 
 import { TagModule } from 'primeng/tag';
@@ -14,8 +14,7 @@ import { ToastModule } from 'primeng/toast';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 
 import { TaskFormComponent } from '../task-form/task-form.component';
-import { Task } from '../../model/project.model';
-
+import { TaskService } from '../../services/task.service';
 
 @Component({
   selector: 'app-timesheet-grid',
@@ -23,202 +22,177 @@ import { Task } from '../../model/project.model';
   imports: [TableModule, TagModule, RatingModule, CommonModule, ButtonModule, ToastModule, FormsModule, TaskFormComponent],
   templateUrl: './timesheet-grid.component.html',
   styleUrls: ['./timesheet-grid.component.css'],              
-providers: [ProjectService, MessageService]
+  providers: [ProjectService, TaskService, MessageService]
 })
 export class TimesheetGridComponent implements OnInit {
 
   projects!: Project[];
+  expandedRows = {};  
+  daysOfWeek: { day: string; date: string }[] = [];
+  weekStartDate: Date = new Date(); // Default to today
+  showTaskForm = false;
+  selectedProject: any = null;
 
-    expandedRows = {};  
-// days: any;
-daysOfWeek: { day: string; date: string }[] = [];
+  constructor(
+    private projectService: ProjectService,
+    private taskService: TaskService,
+    private messageService: MessageService
+  ) {}
 
-        
-weekStartDate: Date = new Date(); // Default to today
-
-
-  constructor(private projectService: ProjectService, private messageService: MessageService) {}
-
- ngOnInit(): void {
+  ngOnInit(): void {
+    this.loadProjects();
+  }
   
-  this.projectService.getProjects().subscribe((data: Project[]) => {
-    this.projects = data;
-    this.daysOfWeek = this.getWeekDates(this.weekStartDate);
-
-
-  });
-}
-
-
-
-getWeekDates(startDate: Date): { day: string, date: string }[] {
-  const week: { day: string, date: string }[] = [];
-  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-  const monday = new Date(startDate);
-  monday.setDate(monday.getDate() - monday.getDay() + 1); // Get this week's Monday
-
-  for (let i = 0; i < 7; i++) {
-    const date = new Date(monday);
-    date.setDate(monday.getDate() + i);
-    week.push({
-      day: days[i],
-      date: date.toLocaleDateString('en-US', { day: '2-digit', month: 'short' }) // e.g., Apr 14
+  loadProjects(): void {
+    this.projectService.getProjects().subscribe((data: Project[]) => {
+      this.projects = data;
+      this.daysOfWeek = this.getWeekDates(this.weekStartDate);
     });
   }
 
-  return week;
-}
+  getWeekDates(startDate: Date): { day: string, date: string }[] {
+    const week: { day: string, date: string }[] = [];
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+    const monday = new Date(startDate);
+    monday.setDate(monday.getDate() - monday.getDay() + 1); // Get this week's Monday
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                     
-    expandAll() {
-  this.expandedRows = this.projects.reduce((acc: { [key: string]: boolean }, p) => {
-    acc[p.id] = true;
-    return acc;   
-  }, {});
-}
-
-     
-    collapseAll() { 
-        this.expandedRows = {};
-    }    getSeverity(status: string) {
-        switch (status) {  
-            case 'INSTOCK':
-                return 'success';
-            case 'LOWSTOCK':
-                return 'warn';
-            case 'OUTOFSTOCK':
-                return 'danger';
-            default:
-                return 'info'; // Default case to handle any other status
-        }
-    }    getStatusSeverity(status: string) {
-        switch (status) {
-            case 'PENDING':
-                return 'warn';
-            case 'DELIVERED':
-                return 'success';
-            case 'CANCELLED':
-                return 'danger';
-            default:
-                return 'info'; // Default case to handle any other status
-        }
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(monday);
+      date.setDate(monday.getDate() + i);
+      week.push({
+        day: days[i],
+        date: date.toLocaleDateString('en-US', { day: '2-digit', month: 'short' }) // e.g., Apr 14
+      });
     }
 
-    onRowExpand(event: TableRowExpandEvent) {
-        this.messageService.add({ severity: 'info', summary: 'Product Expanded', detail: event.data.name, life: 3000 });
-    }
-
-    onRowCollapse(event: TableRowCollapseEvent) {
-        this.messageService.add({ severity: 'success', summary: 'Product Collapsed', detail: event.data.name, life: 3000 });
-    }
-
-
-calculateProjectTotal(project: Project, day: string): string {
-  let totalMinutes = 0;
-
-  project.tasks?.forEach(task => {
-    const timeStr = task.hours?.[day];
-
-    if (typeof timeStr === 'string' && timeStr.includes(':')) {
-      const [hrs, mins] = timeStr.split(':').map(Number);
-      totalMinutes += hrs * 60 + mins;
-    }
-  }); 
-
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-  return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-}
-
-// Add a property to store the selected project
-selectedProject: any = null;
-
-// Add this new method
-openTaskForm(project: any) {
-    console.log('Opening task form with project:', project);
-  this.selectedProject = project;
-  this.showTaskForm = true;
-}
-
-
-
-
-showTaskForm = false;
-// ...existing code...
-
-handleTaskSave(taskData: any) {
-  // Find the project by id instead of name
-  const selectedProject = this.projects.find(p => p.id === taskData.project.id);
-  
-  if (selectedProject) {
-    selectedProject.tasks = selectedProject.tasks || [];
-    
-    // Create a new task with properly initialized hours object for all days
-    const newTask: Task = {
-      id: Date.now(), // Generate a temporary unique ID
-      name: taskData.name,
-      description: taskData.description,
-      billable: taskData.billable,
-      status: taskData.status,
-      category: taskData.category,
-      hours: {} as { [day: string]: string }
-    };
-    
-    // Initialize hours for each day of the week
-    this.daysOfWeek.forEach(day => {
-      newTask.hours[day.day] = '00:00';
-    });
-    
-    // Add the new task to the project
-    selectedProject.tasks.push(newTask);
-    
-    // Show success message
-    this.messageService.add({ 
-      severity: 'success', 
-      summary: 'Task Added', 
-      detail: `Task "${newTask.name}" added to project "${selectedProject.name}"`, 
-      life: 3000 
-    });
+    return week;
   }
-}
+
+  expandAll() {
+    this.expandedRows = this.projects.reduce((acc: { [key: string]: boolean }, p) => {
+      acc[p.id] = true;
+      return acc;   
+    }, {});
+  }
+
+  collapseAll() { 
+    this.expandedRows = {};
+  }    getSeverity(status: string) {
+      switch (status) {  
+          case 'INSTOCK':
+              return 'success';
+          case 'LOWSTOCK':
+              return 'warn';
+          case 'OUTOFSTOCK':
+              return 'danger';
+          default:
+              return 'info'; // Default case to handle any other status
+      }
+  }    getStatusSeverity(status: string) {
+      switch (status) {
+          case 'PENDING':
+              return 'warn';
+          case 'DELIVERED':
+              return 'success';
+          case 'CANCELLED':
+              return 'danger';
+          default:
+              return 'info'; // Default case to handle any other status
+      }
+  }
+
+  onRowExpand(event: TableRowExpandEvent) {
+      this.messageService.add({ severity: 'info', summary: 'Project Expanded', detail: event.data.name, life: 3000 });
+  }
+
+  onRowCollapse(event: TableRowCollapseEvent) {
+      this.messageService.add({ severity: 'success', summary: 'Project Collapsed', detail: event.data.name, life: 3000 });
+  }
 
 
+  calculateProjectTotal(project: Project, day: string): string {
+    let totalMinutes = 0;
 
+    project.tasks?.forEach(task => {
+      const timeStr = task.hours?.[day];
 
+      if (typeof timeStr === 'string' && timeStr.includes(':')) {
+        const [hrs, mins] = timeStr.split(':').map(Number);
+        totalMinutes += hrs * 60 + mins;
+      }
+    }); 
 
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
 
+  openTaskForm(project: any) {
+      console.log('Opening task form with project:', project);
+    this.selectedProject = project;
+    this.showTaskForm = true;
+  }
 
+  handleTaskSave(taskData: any) {
+    // Find the project by id
+    const selectedProject = this.projects.find(p => p.id === taskData.project.id);
+    
+    if (selectedProject) {
+      selectedProject.tasks = selectedProject.tasks || [];
+      
+      // Create a new task with properly initialized hours object for all days
+      const newTask: Task = {
+        id: Date.now(), // Generate a unique ID
+        name: taskData.name,
+        description: taskData.description,
+        billable: taskData.billable,
+        status: taskData.status,
+        category: taskData.category,
+        hours: {} as { [day: string]: string }
+      };
+      
+      // Initialize hours for each day of the week
+      this.daysOfWeek.forEach(day => {
+        newTask.hours[day.day] = '00:00';
+      });
+      
+      // Add the new task to the project
+      selectedProject.tasks.push(newTask);
+      
+      // Save the updated projects to localStorage
+      this.projectService.saveProjects(this.projects);
+      
+      // Show success message
+      this.messageService.add({ 
+        severity: 'success', 
+        summary: 'Task Added', 
+        detail: `Task "${newTask.name}" added to project "${selectedProject.name}"`, 
+        life: 3000 
+      });
+    }
+  }
+  
+  // Method to update task hours - add this to handle hour changes
+  updateTaskHours(project: Project, task: Task, day: string, value: string): void {
+    if (task.hours) {
+      task.hours[day] = value;
+      // Save the changes to localStorage
+      this.projectService.saveProjects(this.projects);
+    }
+  }
 
+  // Method to handle billable toggle changes
+  updateTaskBillable(task: Task): void {
+    // Save the changes to localStorage
+    this.projectService.saveProjects(this.projects);
+  }
 
-
-
-
+  // Method to handle project billable toggle changes
+  updateProjectBillable(project: Project): void {
+    // Save the changes to localStorage
+    this.projectService.saveProjects(this.projects);
+  }
 }
 
 

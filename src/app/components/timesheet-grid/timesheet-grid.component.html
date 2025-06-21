@@ -37,7 +37,7 @@
 </td>
 
       <td></td>      <td>
-        <p-inputSwitch [(ngModel)]="project.billable" [style]="{ 'transform': 'scale(0.8)' }"></p-inputSwitch>
+        <p-inputSwitch [(ngModel)]="project.billable" name="projectBillable_{{project.id}}" (onChange)="updateProjectBillable(project)" [style]="{ 'transform': 'scale(0.8)' }"></p-inputSwitch>
       </td>
       <td *ngFor="let d of daysOfWeek" class="time-cell">
   {{ calculateProjectTotal(project, d.day) }}
@@ -71,15 +71,15 @@
              [(ngModel)]="task.description" 
              placeholder="Description"
              class="input-cell" style="text-align: left;" />
-    </td>
-    <!-- Billability -->
+    </td>    <!-- Billability -->
     <td>
-      <p-inputSwitch [(ngModel)]="task.billable" [style]="{ 'transform': 'scale(0.8)' }"></p-inputSwitch>
+      <p-inputSwitch [(ngModel)]="task.billable" name="taskBillable_{{task.id}}" (onChange)="updateTaskBillable(task)" [style]="{ 'transform': 'scale(0.8)' }"></p-inputSwitch>
     </td>    <!-- Hours for Each Day -->
-    <td *ngFor="let d of daysOfWeek" class="time-cell">
-      <input type="text"
-             [(ngModel)]="task.hours [d.day]"
+    <td *ngFor="let d of daysOfWeek" class="time-cell">      <input type="text"
+             [(ngModel)]="task.hours[d.day]"
+             name="taskHours_{{task.id}}_{{d.day}}"
              placeholder="00:00"
+             (blur)="updateTaskHours(project, task, d.day, task.hours[d.day])"
              class="time-input" />
     </td>
   </tr>

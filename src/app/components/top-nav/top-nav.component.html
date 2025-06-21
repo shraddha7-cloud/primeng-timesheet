@@ -36,8 +36,8 @@
       <span class="date-range">{{ formatDateRange() }}</span>
       <button pButton icon="pi pi-chevron-right" class="p-button-text" (click)="nextWeek()"></button>
       <button pButton icon="pi pi-calendar" class="p-button-text" (click)="calendarVisible = !calendarVisible"></button>
-      <div *ngIf="calendarVisible" class="calendar-popup">
-        <p-calendar [(ngModel)]="selectedDate" 
+      <div *ngIf="calendarVisible" class="calendar-popup">        <p-calendar [(ngModel)]="selectedDate" 
+                   name="selectedDate"
                    [inline]="true" 
                    [showWeek]="true"
                    (onSelect)="onDateSelect()"></p-calendar>
