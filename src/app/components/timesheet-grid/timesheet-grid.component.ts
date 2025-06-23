@@ -15,6 +15,7 @@ import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 
 import { TaskFormComponent } from '../task-form/task-form.component';
 import { TaskService } from '../../services/task.service';
+import { TimeInputDirective } from '../../directives/time-input.directive';
 
 @Component({
   selector: 'app-timesheet-grid',
@@ -172,13 +173,23 @@ export class TimesheetGridComponent implements OnInit {
       });
     }
   }
-  
-  // Method to update task hours - add this to handle hour changes
+    // Method to update task hours - enhanced to ensure persistence
   updateTaskHours(project: Project, task: Task, day: string, value: string): void {
     if (task.hours) {
+      // Update the local task object
       task.hours[day] = value;
-      // Save the changes to localStorage
-      this.projectService.saveProjects(this.projects);
+      
+      // Also use the dedicated service method to ensure proper persistence
+      this.projectService.updateTaskHours(project.id, task.id, day, value)
+        .subscribe(success => {
+          if (success) {
+            console.log(`Hours updated for task ${task.id} on ${day}: ${value}`);
+          } else {
+            console.error(`Failed to update hours for task ${task.id}`);
+            // Fallback to saving all projects
+            this.projectService.saveProjects(this.projects);
+          }
+        });
     }
   }
 
