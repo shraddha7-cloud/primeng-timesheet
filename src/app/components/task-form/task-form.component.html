@@ -1,77 +1,86 @@
-<div class="offcanvas offcanvas-end show" tabindex="-1" [ngClass]="{ 'd-block': visible }" style="visibility: visible;" *ngIf="visible">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title">New Task</h5>
-    <button type="button" class="btn-close text-reset" (click)="onClose()"></button>
-  </div>
-  <div class="offcanvas-body">
-    <form #taskForm="ngForm" (ngSubmit)="saveTask()">
-      <!-- Project Name (Read-only) -->
-      <div class="mb-3">
-        <label for="projectDisplay">Project <span class="text-danger">*</span></label>
-        <div class="form-control bg-light" id="projectDisplay">{{ task.project?.name || 'No project selected' }}</div>        <!-- Hidden input to keep the model binding -->
-        <input type="hidden" [(ngModel)]="task.project" name="project" required>
-      </div>
+<div class="offcanvas-container" *ngIf="visible">
+  <!-- Backdrop -->
+  <div class="offcanvas-backdrop" (click)="onClose()"></div>
 
-      <!-- Task Category -->
-      <div class="mb-3">
-        <label for="category">Task Category <span class="text-danger">*</span></label>
-        <select class="form-select" id="category" [(ngModel)]="task.category" name="category" required>
-          <option value="" disabled selected>Select Task Category</option>
-          <option value="Development">Development</option>
-          <option value="Testing">Testing</option>
-          <option value="Documentation">Documentation</option>
-        </select>
-      </div>
+  <!-- Offcanvas -->
+  <div class="offcanvas offcanvas-end show">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title">New Task</h5>
+      <button type="button" class="btn-close text-reset" (click)="onClose()"></button>
+    </div>
+    <div class="offcanvas-body">
+      <form #taskForm="ngForm" (ngSubmit)="saveTask()" class="needs-validation">
+        <!-- Project Name (Read-only) -->
+        <div class="mb-3">
+          <label for="projectDisplay" class="form-label">Project <span class="text-danger">*</span></label>
+          <div class="form-control bg-light" id="projectDisplay">{{ task.project?.name || 'No project selected' }}</div>
+          <!-- Hidde n input to keep the model binding -->
+          <input type="hidden" [(ngModel)]="task.project" name="project" required>
+        </div>
 
-      <!-- Task Name -->
-      <div class="mb-3">
-        <label for="taskName">Task Name <span class="text-danger">*</span></label>
-        <select class="form-select" id="taskName" [(ngModel)]="task.name" name="taskName" required>
-          <option value="" disabled selected>Select Task Name</option>
-          <option value="Build Login Page">Build Login Page</option>
-          <option value="Bug Fixes">Bug Fixes</option>
-          <option value="Create Report">Create Report</option>
-        </select>
-      </div>
-
-      <!-- Billability & Status -->
-      <div class="row mb-3">
-        <div class="col">
-          <label for="billable">Billability (Jun {{ today }}) <span class="text-danger">*</span></label>
-          <select class="form-select" id="billable" [(ngModel)]="task.billable" name="billable" required>
-            <option [ngValue]="false">Non-Billable</option>
-            <option [ngValue]="true">Billable</option>
+        <!-- Task Category -->
+        <div class="mb-3">
+          <label for="category" class="form-label">Task Category <span class="text-danger">*</span></label>
+          <select class="form-select" id="category" [(ngModel)]="task.category" name="category" required>
+            <option value="" disabled selected>Select Task Category</option>
+            <option value="Development">Development</option>
+            <option value="Testing">Testing</option>
+            <option value="Documentation">Documentation</option>
+            <option value="Design">Design</option>
           </select>
         </div>
-        <div class="col">
-          <label for="status">Task Status <span class="text-danger">*</span></label>
-          <select class="form-select" id="status" [(ngModel)]="task.status" name="status" required>
-            <option value="" disabled selected>Select Status</option>
-            <option value="Active">Active</option>
-            <option value="Completed">Completed</option>
-            <option value="On-Hold">On-Hold</option>
+
+        <!-- Task Name -->
+        <div class="mb-3">
+          <label for="taskName" class="form-label">Task Name <span class="text-danger">*</span></label>
+          <select class="form-select" id="taskName" [(ngModel)]="task.name" name="taskName" required>
+            <option value="" disabled selected>Select Task Name</option>
+            <option value="Build Login Page">Build Login Page</option>
+            <option value="Bug Fixes">Bug Fixes</option>
+            <option value="Create Report">Create Report</option>
+            <option value="API Integration">API Integration</option>
           </select>
         </div>
-      </div>
 
-      <!-- Description -->
-      <div class="mb-3">
-        <label for="description">Description</label>
-        <textarea class="form-control" id="description" rows="3" [(ngModel)]="task.description" name="description"></textarea>
-      </div>
+        <!-- Billability & Status -->
+        <div class="row mb-3">
+          <div class="col">
+            <label for="billable" class="form-label">Billability <span class="text-danger">*</span></label>
+            <select class="form-select" id="billable" [(ngModel)]="task.billable" name="billable" required>
+              <option [ngValue]="false">Non-Billable</option>
+              <option [ngValue]="true">Billable</option>
+            </select>
+          </div>
+          <div class="col">
+            <label for="status" class="form-label">Task Status <span class="text-danger">*</span></label>
+            <select class="form-select" id="status" [(ngModel)]="task.status" name="status" required>
+              <option value="" disabled selected>Select Status</option>
+              <option value="Active">Active</option>
+              <option value="Completed">Completed</option>
+              <option value="On-Hold">On-Hold</option>
+            </select>
+          </div>
+        </div>
 
-      <!-- Comment -->
-      <div class="mb-3">
-        <label for="comment">Comment</label>
-        <textarea class="form-control" id="comment" rows="3" [(ngModel)]="task.comment" name="comment"></textarea>
-      </div>
+        <!-- Description -->
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control" id="description" rows="3" [(ngModel)]="task.description" name="description"></textarea>
+        </div>
 
-      <!-- Buttons -->
-      <div class="d-flex justify-content-end gap-2">
-        <button type="button" class="btn btn-outline-secondary" (click)="onClose()">Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Save</button>
-      </div>
-    </form>
+        <!-- Comment -->
+        <div class="mb-3">
+          <label for="comment" class="form-label">Comment</label>
+          <textarea class="form-control" id="comment" rows="3" [(ngModel)]="task.comment" name="comment"></textarea>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-end gap-2">
+          <button type="button" class="btn btn-outline-secondary" (click)="onClose()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="taskForm.invalid">Save</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 

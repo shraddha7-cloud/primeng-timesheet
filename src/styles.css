@@ -3,16 +3,32 @@
 
 /* Global styles */
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
 body {
     background-color: #f8f9fa;
-    color: #333;
+    color: #212529;
     line-height: 1.5;
+    overflow-x: hidden; /* Prevent horizontal scrolling when offcanvas is open */
+}
+
+/* Bootstrap 5 Offcanvas Overrides */
+.offcanvas-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+}
+
+.offcanvas {
+    z-index: 1045;
 }
 
 /* Remove browser default styles */
@@ -21,6 +37,42 @@ button, input, select, textarea {
     font-size: 100%;
     line-height: 1.15;
     margin: 0;
+}
+
+/* Form Utilities */
+.form-label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+/* Row & Column */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -0.75rem;
+    margin-left: -0.75rem;
+}
+
+.col {
+    flex: 1 0 0%;
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.justify-content-end {
+    justify-content: flex-end !important;
+}
+
+.gap-2 {
+    gap: 0.5rem !important;
 }
 
 /* Utility classes */
@@ -36,10 +88,21 @@ button, input, select, textarea {
     justify-content: space-between;
 }
 
-.gap-2 {
-    gap: 8px;
-}
-
 .gap-4 {
     gap: 16px;
+}
+
+/* Custom utility classes */
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+/* Button styles */
+.btn {
+    cursor: pointer;
+}
+
+.btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
 }

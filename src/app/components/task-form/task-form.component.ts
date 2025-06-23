@@ -15,7 +15,7 @@ import { ButtonModule } from 'primeng/button';
     FormsModule,
     InputSwitchModule,
     DropdownModule,
-    ButtonModule,
+    ButtonModule,                     
     CalendarModule]
 })
 export class TaskFormComponent implements OnInit, OnChanges {
@@ -23,7 +23,7 @@ export class TaskFormComponent implements OnInit, OnChanges {
   @Input() project: any;
   @Input() availableProjects: any[] = [];
   @Input() currentProject: any = null;
-
+                  
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<any>();
 
@@ -31,7 +31,7 @@ export class TaskFormComponent implements OnInit, OnChanges {
     project: null,
     category: '',
     name: '',
-    billable: false,
+    billable: false,             
     status: '',
     description: '',
     comment: ''
@@ -46,8 +46,8 @@ export class TaskFormComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges) {
     // Check if currentProject changed - always update the project
     if (changes['currentProject']) {
-      console.log('currentProject changed to:', this.currentProject);
-      if (this.currentProject) {
+      console.log('currentProject   changed to:', this.currentProject);
+      if (this.currentProject) {                                    
         this.task.project = this.currentProject;
       }
     }
@@ -77,7 +77,7 @@ export class TaskFormComponent implements OnInit, OnChanges {
       name: '',
       billable: false,
       status: 'Active',
-      description: '',
+      description: '',           
       comment: ''
     };
     console.log('Form reset with task.project:', this.task.project);
