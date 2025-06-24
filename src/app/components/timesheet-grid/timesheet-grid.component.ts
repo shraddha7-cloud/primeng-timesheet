@@ -16,11 +16,22 @@ import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { TaskFormComponent } from '../task-form/task-form.component';
 import { TaskService } from '../../services/task.service';
 import { TimeInputDirective } from '../../directives/time-input.directive';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'app-timesheet-grid',
   standalone: true,
-  imports: [TableModule, TagModule, RatingModule, CommonModule, ButtonModule, ToastModule, FormsModule, TaskFormComponent],
+  imports: [
+    TableModule, 
+    TagModule, 
+    RatingModule, 
+    CommonModule, 
+    ButtonModule, 
+    ToastModule, 
+    FormsModule, 
+    TaskFormComponent,
+    ToggleSwitchModule
+  ],
   templateUrl: './timesheet-grid.component.html',
   styleUrls: ['./timesheet-grid.component.css'],              
   providers: [ProjectService, TaskService, MessageService]

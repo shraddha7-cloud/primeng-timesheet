@@ -91,3 +91,53 @@
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr:last-child > td {
   border-bottom: none;
 }
+
+/* Toggle switch styling */
+:host ::ng-deep .p-toggleswitch.p-component {
+  margin: 0 auto;
+  display: block;
+}
+
+/* Unchecked state (NO) - Red background */
+:host ::ng-deep .p-toggleswitch .p-toggleswitch-slider {
+  background-color: #ff5252 !important; /* Red background for "No" state */
+}
+
+/* Checked state (YES) - Green background */
+:host ::ng-deep .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
+  background-color: #4caf50 !important; /* Green background for "Yes" state */
+}
+
+/* Toggle handle styling */
+:host ::ng-deep .p-toggleswitch .p-toggleswitch-slider:before {
+  background-color: #ffffff;
+  border: 1px solid #d8d8d8;
+}
+
+/* Hover states */
+:host ::ng-deep .p-toggleswitch:not(.p-disabled):hover .p-toggleswitch-slider {
+  background-color: #d32f2f !important; /* Darker red on hover when off */
+}
+
+:host ::ng-deep .p-toggleswitch.p-toggleswitch-checked:not(.p-disabled):hover .p-toggleswitch-slider {
+  background-color: #388e3c !important; /* Darker green on hover when on */
+}
+
+/* Toggle switch text labels */
+:host ::ng-deep .p-toggleswitch .p-toggleswitch-label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+:host ::ng-deep .p-toggleswitch .p-toggleswitch-label.p-toggleswitch-label-on {
+  color: #388e3c; /* Green text for Yes label */
+}
+
+:host ::ng-deep .p-toggleswitch .p-toggleswitch-label.p-toggleswitch-label-off {
+  color: #d32f2f; /* Red text for No label */
+}
+
+/* Ensure the toggle switch has enough space */
+td.text-center .p-toggleswitch {
+  min-width: 70px;
+}
