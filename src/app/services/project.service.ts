@@ -200,6 +200,38 @@ export class ProjectService {
     );
   }
 
+  /**
+   * Calculate total hours for all days and all projects combined
+   * @returns Total hours in format 'HH:MM'
+   */
+  calculateTotalWeekHours(): Observable<string> {
+    return this.getProjects().pipe(
+      map(projects => {
+        let totalMinutes = 0;
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        
+        projects.forEach(project => {
+          if (project.tasks) {
+            project.tasks.forEach(task => {
+              days.forEach(day => {
+                const timeStr = task.hours?.[day];
+                
+                if (typeof timeStr === 'string' && timeStr.includes(':')) {
+                  const [hrs, mins] = timeStr.split(':').map(Number);
+                  totalMinutes += hrs * 60 + mins;
+                }
+              });
+            });
+          }
+        });
+        
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+      })
+    );
+  }
+
   clearAllTasks(): void {
     localStorage.removeItem(this.STORAGE_KEY);
     // This will cause the default data to load next time getProjects() is called

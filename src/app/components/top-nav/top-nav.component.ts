@@ -4,13 +4,15 @@ import { ButtonModule } from 'primeng/button';
 import { TabViewModule } from 'primeng/tabview';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
+import { ProjectService } from '../../services/project.service';
 
 @Component({
   selector: 'app-top-nav',
   standalone: true,
   imports: [CommonModule, ButtonModule, TabViewModule, CalendarModule, FormsModule],
   templateUrl: './top-nav.component.html',
-  styleUrls: ['./top-nav.component.css']
+  styleUrls: ['./top-nav.component.css'],
+  providers: [ProjectService]
 })
 export class TopNavComponent implements OnInit {
   // Current date range for timesheet
@@ -22,15 +24,29 @@ export class TopNavComponent implements OnInit {
   
   // Selected date in calendar
   selectedDate: Date = new Date(2025, 5, 16);
-
   daysOfWeek: { day: string; date: string }[] = [];
   
   // Total hours
-  loggedHours: string = '14:20';
-  submittedHours: string = '14:20';
+  loggedHours: string = '00:00';
+  submittedHours: string = '00:00';
+
+  constructor(private projectService: ProjectService) {}
 
   ngOnInit(): void {
     this.generateDaysOfWeek();
+    this.updateTotalHours();
+  }
+  
+  /**
+   * Update the total logged hours from all projects
+   */
+  updateTotalHours(): void {
+    this.projectService.calculateTotalWeekHours().subscribe(totalHours => {
+      this.loggedHours = totalHours;
+      // In a real application, submitted hours would come from another source
+      // Here we're using the same value for demo purposes
+      this.submittedHours = totalHours;
+    });
   }
 
   generateDaysOfWeek(): void {
@@ -49,12 +65,12 @@ export class TopNavComponent implements OnInit {
 
     this.daysOfWeek = days;
   }
-
   // Navigate to previous week
   previousWeek(): void {
     this.startDate.setDate(this.startDate.getDate() - 7);
     this.endDate.setDate(this.endDate.getDate() - 7);
-    this.generateDaysOfWeek(); 
+    this.generateDaysOfWeek();
+    this.updateTotalHours();
   }
 
   // Navigate to next week
@@ -62,6 +78,7 @@ export class TopNavComponent implements OnInit {
     this.startDate.setDate(this.startDate.getDate() + 7);
     this.endDate.setDate(this.endDate.getDate() + 7);
     this.generateDaysOfWeek();
+    this.updateTotalHours();
   }
   
   // Format date for display
@@ -79,8 +96,7 @@ export class TopNavComponent implements OnInit {
     // Implement submission logic here
     console.log('Timesheet submitted');
   }
-  
-  // Handle date selection from calendar
+    // Handle date selection from calendar
   onDateSelect(): void {
     // Calculate the start of the week (Monday) from the selected date
     const dayOfWeek = this.selectedDate.getDay(); // 0 for Sunday, 1 for Monday, etc.
@@ -96,6 +112,9 @@ export class TopNavComponent implements OnInit {
     
     // Update the days of week
     this.generateDaysOfWeek();
+    
+    // Update the total hours for the new week
+    this.updateTotalHours();
     
     // Hide the calendar after selection
     this.calendarVisible = false;
