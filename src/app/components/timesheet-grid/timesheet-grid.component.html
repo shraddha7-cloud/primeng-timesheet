@@ -2,14 +2,13 @@
 <p-table [value]="projects" dataKey="id" [tableStyle]="{ 'min-width': '100%' }"
          [expandedRowKeys]="expandedRows"
          (onRowExpand)="onRowExpand($event)"
-         (onRowCollapse)="onRowCollapse($event)">
-  <!-- Toolbar for expand/collapse -->
+         (onRowCollapse)="onRowCollapse($event)">  <!-- Toolbar for expand/collapse -->
   <ng-template pTemplate="caption">
     <div class="flex justify-end gap-2 p-2">
       <p-button label="Expand All" icon="pi pi-plus" text (onClick)="expandAll()" />
       <p-button label="Collapse All" icon="pi pi-minus" text (onClick)="collapseAll()" />
     </div>
-  </ng-template>  <!-- Header like InTime Pro -->
+  </ng-template><!-- Header like InTime Pro -->
   <ng-template pTemplate="header">
     <tr>
       <th style="width: 3rem"></th>
@@ -39,9 +38,10 @@
       <td></td>      <td>
         <p-inputSwitch [(ngModel)]="project.billable" name="projectBillable_{{project.id}}" (onChange)="updateProjectBillable(project)" [style]="{ 'transform': 'scale(0.8)' }"></p-inputSwitch>
       </td>
-      <td *ngFor="let d of daysOfWeek" class="time-cell">
-  {{ calculateProjectTotal(project, d.day) }}
-</td>
+         <!-- In your timesheet-grid.component.html, check how the totals are displayed -->
+      <td *ngFor="let d of daysOfWeek" class="text-center font-bold">
+        {{ calculateProjectTotal(project, d.day) }}
+      </td>
 
     </tr>
     <tr>

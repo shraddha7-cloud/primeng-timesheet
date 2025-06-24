@@ -43,21 +43,43 @@ export class TimesheetGridComponent implements OnInit {
   ngOnInit(): void {
     this.loadProjects();
   }
-  
-  loadProjects(): void {
+    loadProjects(): void {
+    // First initialize the days of the week
+    this.daysOfWeek = this.getWeekDates(this.weekStartDate);
+    
+    // Now load the projects
     this.projectService.getProjects().subscribe((data: Project[]) => {
       this.projects = data;
-      this.daysOfWeek = this.getWeekDates(this.weekStartDate);
+      
+      // Ensure all tasks have properly initialized hours
+      this.projects.forEach(project => {
+        if (project.tasks) {
+          project.tasks.forEach(task => {
+            // Initialize hours object if it doesn't exist
+            task.hours = task.hours || {};
+            
+            // Make sure all days have a value
+            this.daysOfWeek.forEach(day => {
+              if (!task.hours[day.day]) {
+                task.hours[day.day] = '00:00';
+              }
+            });
+          });
+        }
+      });
+      
+      // After initialization, save the projects to ensure hours data is persisted
+      this.projectService.saveProjects(this.projects);
     });
   }
-
+  
   getWeekDates(startDate: Date): { day: string, date: string }[] {
     const week: { day: string, date: string }[] = [];
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
     const monday = new Date(startDate);
     monday.setDate(monday.getDate() - monday.getDay() + 1); // Get this week's Monday
-
+ 
     for (let i = 0; i < 7; i++) {
       const date = new Date(monday);
       date.setDate(monday.getDate() + i);
@@ -102,6 +124,7 @@ export class TimesheetGridComponent implements OnInit {
               return 'info'; // Default case to handle any other status
       }
   }
+  
 
   onRowExpand(event: TableRowExpandEvent) {
       this.messageService.add({ severity: 'info', summary: 'Project Expanded', detail: event.data.name, life: 3000 });
@@ -111,18 +134,23 @@ export class TimesheetGridComponent implements OnInit {
       this.messageService.add({ severity: 'success', summary: 'Project Collapsed', detail: event.data.name, life: 3000 });
   }
 
-
   calculateProjectTotal(project: Project, day: string): string {
     let totalMinutes = 0;
 
-    project.tasks?.forEach(task => {
-      const timeStr = task.hours?.[day];
+    // Make sure the project has tasks
+    if (project && project.tasks && project.tasks.length > 0) {
+      project.tasks.forEach(task => {
+        // Make sure the task has hours data
+        if (task.hours) {
+          const timeStr = task.hours[day]; // Use day directly as it's already the string key
 
-      if (typeof timeStr === 'string' && timeStr.includes(':')) {
-        const [hrs, mins] = timeStr.split(':').map(Number);
-        totalMinutes += hrs * 60 + mins;
-      }
-    }); 
+          if (typeof timeStr === 'string' && timeStr.includes(':')) {
+            const [hrs, mins] = timeStr.split(':').map(Number);
+            totalMinutes += hrs * 60 + mins;
+          }
+        }
+      }); 
+    }
 
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
@@ -133,11 +161,11 @@ export class TimesheetGridComponent implements OnInit {
       console.log('Opening task form with project:', project);
     this.selectedProject = project;
     this.showTaskForm = true;
-  }
+  } 
 
   handleTaskSave(taskData: any) {
     // Find the project by id
-    const selectedProject = this.projects.find(p => p.id === taskData.project.id);
+     const selectedProject = this.projects.find(p => p.id === taskData.project.id);
     
     if (selectedProject) {
       selectedProject.tasks = selectedProject.tasks || [];
@@ -198,12 +226,17 @@ export class TimesheetGridComponent implements OnInit {
     // Save the changes to localStorage
     this.projectService.saveProjects(this.projects);
   }
-
   // Method to handle project billable toggle changes
   updateProjectBillable(project: Project): void {
     // Save the changes to localStorage
     this.projectService.saveProjects(this.projects);
   }
+
+
+
+
+
+
 }
 
 
