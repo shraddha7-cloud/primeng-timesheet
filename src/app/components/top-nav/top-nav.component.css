@@ -228,3 +228,43 @@
   justify-content: center !important;
   box-shadow: none !important;
 }
+
+/* Submission Dialog styling */
+.submission-dialog-content {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.submission-icon {
+  flex: 0 0 50px;
+  margin-right: 1.5rem;
+}
+
+.submission-message h2 {
+  margin: 0 0 0.5rem 0;
+  color: #4caf50;
+  font-size: 1.5rem;
+}
+
+.submission-message p {
+  margin: 0;
+  color: #666;
+  font-size: 1rem;
+}
+
+:host ::ng-deep .p-dialog-header {
+  background: #f8f9fa;
+  padding: 1rem 1.5rem;
+}
+
+:host ::ng-deep .p-dialog-footer {
+  text-align: right;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+  padding: 0;
+}

@@ -5,11 +5,12 @@ import { TabViewModule } from 'primeng/tabview';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 import { ProjectService } from '../../services/project.service';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-top-nav',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TabViewModule, CalendarModule, FormsModule],
+  imports: [CommonModule, ButtonModule, TabViewModule, CalendarModule, FormsModule, DialogModule],
   templateUrl: './top-nav.component.html',
   styleUrls: ['./top-nav.component.css'],
   providers: [ProjectService]
@@ -18,9 +19,11 @@ export class TopNavComponent implements OnInit {
   // Current date range for timesheet
   startDate: Date = new Date(2025, 5, 16); // June 16, 2025
   endDate: Date = new Date(2025, 5, 22); // June 22, 2025
-  
-  // Calendar popup visibility
+    // Calendar popup visibility
   calendarVisible: boolean = false;
+  
+  // Dialog visibility
+  submittedDialogVisible: boolean = false;
   
   // Selected date in calendar
   selectedDate: Date = new Date(2025, 5, 16);
@@ -90,10 +93,22 @@ export class TopNavComponent implements OnInit {
 
     return `${start} - ${end}, ${year}`;
   }
-  
   // Submit timesheet
   submitTimesheet(): void {
-    // Implement submission logic here
+    // First update the hours from any recent changes
+    this.updateTotalHours();
+    
+    // Update the submitted hours to match the logged hours
+    this.submittedHours = this.loggedHours;
+    
+    // Show the submission dialog
+    this.submittedDialogVisible = true;
+    
+    // Get the current projects and save them to ensure all changes are persisted
+    this.projectService.getProjects().subscribe(projects => {
+      this.projectService.saveProjects(projects);
+    });
+    
     console.log('Timesheet submitted');
   }
     // Handle date selection from calendar
