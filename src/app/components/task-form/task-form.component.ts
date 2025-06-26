@@ -5,18 +5,25 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-task-form',
   standalone: true,
   templateUrl: './task-form.component.html',
   styleUrls: ['./task-form.component.css'],
-  imports: [FormsModule, NgIf, NgClass, CommonModule,
+  imports: [
+    CommonModule,
     FormsModule,
+    NgIf,
     InputSwitchModule,
     DropdownModule,
-    ButtonModule,                     
-    CalendarModule]
+    ButtonModule,
+    CalendarModule,
+    ToastModule
+  ],
+  providers: [MessageService]
 })
 export class TaskFormComponent implements OnInit, OnChanges {
   @Input() visible = false;
@@ -24,8 +31,9 @@ export class TaskFormComponent implements OnInit, OnChanges {
   @Input() availableProjects: any[] = [];
   @Input() currentProject: any = null;
                   
-  @Output() close = new EventEmitter<void>();
-  @Output() save = new EventEmitter<any>();
+  @Output() close = new EventEmitter<void>();  @Output() save = new EventEmitter<any>();
+  
+  constructor(private messageService: MessageService) {}
 
   task: any = {
     project: null,
@@ -61,10 +69,19 @@ export class TaskFormComponent implements OnInit, OnChanges {
 
   onClose() {
     this.close.emit();
-  }
-
-  saveTask() {
+  }  saveTask() {
+    // The form validation is already handled at the template level
+    // We only reach this point if the form is valid (through [ngSubmit]="taskForm.form.valid && saveTask()")
     const newTask = { ...this.task, hours: {} };
+    
+    // Show success toast
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Task Added',
+      detail: `Task "${newTask.name}" was added successfully to project "${newTask.project?.name}"`,
+      life: 3000
+    });
+    
     this.save.emit(newTask);
     this.close.emit();           
     this.resetForm();

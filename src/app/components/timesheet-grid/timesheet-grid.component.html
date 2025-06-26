@@ -13,8 +13,8 @@
       <th style="width: 200px">Projects / Tasks</th>
       <th style="width: 180px">Description</th>
       <th style="width: 120px">Billability</th>
-      <th *ngFor="let d of daysOfWeek" style="width: 100px">
-        {{ d.day }}<br /><small>{{ d.date }}</small>
+      <th *ngFor="let d of daysOfWeek" style="width: 100px; text-align: center; padding: 0.5rem 0;">
+        <div class="day-header">{{ d.day }}<br /><small>{{ d.date }}</small></div>
       </th>
 
     </tr>
@@ -35,19 +35,18 @@
       <td class="text-center">
         <!-- Billability toggle removed from project headings -->
       </td>
-      <!-- In your timesheet-grid.component.html, check how the totals are displayed -->
-      <td *ngFor="let d of daysOfWeek" class="text-center font-bold">
-        {{ calculateProjectTotal(project, d.day) }}
+      <!-- Display project totals with consistent styling -->
+      <td *ngFor="let d of daysOfWeek" class="time-cell project-total-cell">
+        <span class="project-total">{{ calculateProjectTotal(project, d.day) }}</span>
       </td>
 
     </tr>
     <tr>
       <td></td>
       <td colspan="10">
-        <a href="#" (click)="openTaskForm(project); $event.preventDefault()">+ Task</a>
+       <a href="#" style="text-decoration: none;" (click)="openTaskForm(project); $event.preventDefault()">+ Task</a>
 
-
-      </td>
+     </td>
     </tr>
   </ng-template>
 
@@ -61,36 +60,42 @@
           <i class="pi pi-pencil text-gray-500 text-sm cursor-pointer"></i>
           <span class="truncate">{{ task.name }}</span>
         </div>
-      </td> 
+      </td>  
       
       <!-- Description -->
       <td>
         <input type="text" [(ngModel)]="task.description" placeholder="Description" class="input-cell"
           style="text-align: left;" />
       </td>
+        
       
-      
-      <!-- Billability -->
-      <td class="text-center">
-        <p-toggleSwitch [(ngModel)]="task.billable" name="taskBillable_{{task.id}}"
-          (onChange)="updateTaskBillable(task)" onLabel="Yes" offLabel="No"
-          [style]="{ 'margin': '0 auto' }"></p-toggleSwitch>
-      </td>
+<td class="text-center">
+  <div class="billable-toggle-wrapper">
+    <span class="billable-label left-label" *ngIf="task.billable">Yes</span>
+    <span class="billable-label right-label" *ngIf="!task.billable">No</span>
+    <p-inputSwitch
+      [(ngModel)]="task.billable"
+      (onChange)="updateTaskBillable(task)"
+      name="taskBillable_{{ task.id }}">
+    </p-inputSwitch>
+  </div>
+</td>
 
 
 
       <!-- Hours for Each Day -->
-      <td *ngFor="let d of daysOfWeek" class="time-cell"> <input type="text" [(ngModel)]="task.hours[d.day]"
+      <td *ngFor="let d of daysOfWeek" class="time-cell" style="padding: 0;"> 
+        <input type="text" [(ngModel)]="task.hours[d.day]"
           name="taskHours_{{task.id}}_{{d.day}}" placeholder="00:00" appTimeInput
           (blur)="updateTaskHours(project, task, d.day, task.hours[d.day])" class="time-input" />
       </td>
     </tr>
   </ng-template>
 
-</p-table>
+</p-table> 
 
 <app-task-form [visible]="showTaskForm" [availableProjects]="projects" [currentProject]="selectedProject"
-  (close)="showTaskForm = false" (save)="handleTaskSave($event)">
+  (close)=" showTaskForm = false" (save)="handleTaskSave($event)">
 </app-task-form>
 
 <!-- 

@@ -16,20 +16,16 @@ import { DialogModule } from 'primeng/dialog';
   providers: [ProjectService]
 })
 export class TopNavComponent implements OnInit {
-  // Current date range for timesheet
-  startDate: Date = new Date(2025, 5, 16); // June 16, 2025
-  endDate: Date = new Date(2025, 5, 22); // June 22, 2025
-    // Calendar popup visibility
-  calendarVisible: boolean = false;
   
-  // Dialog visibility
+  startDate: Date = new Date(2025, 5, 16); 
+  endDate: Date = new Date(2025, 5, 22); 
+  
+  calendarVisible: boolean = false;
   submittedDialogVisible: boolean = false;
   
-  // Selected date in calendar
   selectedDate: Date = new Date(2025, 5, 16);
   daysOfWeek: { day: string; date: string }[] = [];
   
-  // Total hours
   loggedHours: string = '00:00';
   submittedHours: string = '00:00';
 
@@ -40,14 +36,10 @@ export class TopNavComponent implements OnInit {
     this.updateTotalHours();
   }
   
-  /**
-   * Update the total logged hours from all projects
-   */
   updateTotalHours(): void {
     this.projectService.calculateTotalWeekHours().subscribe(totalHours => {
       this.loggedHours = totalHours;
-      // In a real application, submitted hours would come from another source
-      // Here we're using the same value for demo purposes
+    
       this.submittedHours = totalHours;
     });
   }
@@ -56,14 +48,14 @@ export class TopNavComponent implements OnInit {
     const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const days: { day: string; date: string }[] = [];
 
-    let date = new Date(this.startDate); // start from Monday
+    let date = new Date(this.startDate); 
 
     for (let i = 0; i < 7; i++) {
       const dayName = dayNames[i];
-      const dateStr = `${date.getDate()}/${date.getMonth() + 1}`; // e.g., 17/6
+      const dateStr = `${date.getDate()}/${date.getMonth() + 1}`; 
       days.push({ day: dayName, date: dateStr });
 
-      date.setDate(date.getDate() + 1); // move to next day
+      date.setDate(date.getDate() + 1); 
     }
 
     this.daysOfWeek = days;

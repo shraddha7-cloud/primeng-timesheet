@@ -17,6 +17,7 @@ import { TaskFormComponent } from '../task-form/task-form.component';
 import { TaskService } from '../../services/task.service';
 import { TimeInputDirective } from '../../directives/time-input.directive';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @Component({
   selector: 'app-timesheet-grid',
@@ -30,7 +31,8 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
     ToastModule, 
     FormsModule, 
     TaskFormComponent,
-    ToggleSwitchModule
+    ToggleSwitchModule,
+    InputSwitchModule
   ],
   templateUrl: './timesheet-grid.component.html',
   styleUrls: ['./timesheet-grid.component.css'],              

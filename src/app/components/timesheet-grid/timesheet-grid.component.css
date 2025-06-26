@@ -46,6 +46,7 @@
   padding: 4px;
   font-size: 14px;
   background-color: transparent;
+  color: #333333; /* Explicitly defining text color */
   outline: none;
   margin: 0 auto;
   display: block;
@@ -81,6 +82,9 @@
   border: none;
   border-bottom: 1px solid #e6e6e6;
   font-weight: 600;
+  text-align: center !important;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
@@ -90,6 +94,18 @@
 
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr:last-child > td {
   border-bottom: none;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td.time-cell {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Center day name and date within the header */
+:host ::ng-deep th small {
+  display: block;
+  text-align: center;
+  margin-top: 2px;
 }
 
 /* Toggle switch styling */
@@ -140,4 +156,68 @@
 /* Ensure the toggle switch has enough space */
 td.text-center .p-toggleswitch {
   min-width: 70px;
+}
+
+
+.billable-toggle-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.p-inputswitch {
+  width: 75px;
+  height: 32px;
+}
+
+/* General YES/NO label styles */
+.billable-label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  z-index: 10;
+  pointer-events: none;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Yes label  */
+.left-label {
+  left: 2px; 
+}
+
+/* No label */
+.right-label {
+  right: 2px; 
+}
+
+.project-total-cell {
+  padding: 0 !important; /* Remove any padding that might cause misalignment */
+}
+
+.project-total {
+  font-size: 14px;
+  padding: 4px;
+  font-weight: normal;
+  display: block; /* Changed from inline-block to block */
+  margin: 0 auto;
+  color: #333333; /* Adding text color to match task hours */
+  width: 80px; /* Match the width of the time-input */
+  text-align: center;
+}
+
+/* Make sure the time cells have consistent height */
+td.time-cell {
+  vertical-align: middle;
+}
+
+/* Style for the day header container */
+.day-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
