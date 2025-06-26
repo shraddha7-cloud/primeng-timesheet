@@ -1,12 +1,7 @@
 <!-- Updated timesheet-grid.component.html -->
 <p-table [value]="projects" dataKey="id" [tableStyle]="{ 'min-width': '100%' }" [expandedRowKeys]="expandedRows"
-  (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)"> <!-- Toolbar for expand/collapse -->
-  <ng-template pTemplate="caption">
-    <div class="flex justify-end gap-2 p-2">
-      <p-button label="Expand All" icon="pi pi-plus" text (onClick)="expandAll()" />
-      <p-button label="Collapse All" icon="pi pi-minus" text (onClick)="collapseAll()" />
-    </div>
-  </ng-template><!-- Header like InTime Pro -->
+  (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)">
+  <!-- Header like InTime Pro -->
   <ng-template pTemplate="header">
     <tr>
       <th style="width: 3rem"></th>

@@ -13,25 +13,7 @@ export class ProjectService {
     {
       id: 1,
       name: 'Abel Systems',
-      tasks: [
-        {
-          id: 1,
-          name: 'UI/UX Development',
-          description: 'Design login and dashboard UI',
-          billable: true,
-          status: 'Active',
-          category: 'Development',
-          hours: {
-            Mon: '08:00',
-            Tue: '05:00',
-            Wed: '00:00',
-            Thu: '00:00',
-            Fri: '00:00',
-            Sat: '00:00',
-            Sun: '00:00'
-          }
-        }
-      ]
+      tasks: []
     },
     {
       id: 2,

@@ -2,15 +2,7 @@
   {
     "id": 1,
     "name": "Abel Systems",
-    "tasks": [
-      {
-        "id": 101,
-        "name": "UI/UX Development",
-        "description": "UI polish",
-        "billable": true,
-        "hours": { "Mon": 8, "Tue": 5, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0, "Sun": 0 }
-      }
-    ]
+    "tasks": []
   },
   {
     "id": 2,
