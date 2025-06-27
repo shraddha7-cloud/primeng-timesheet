@@ -104,17 +104,34 @@
   color: #333;
 }
 
-.calendar-popup {
+.calendar-wrapper {
   position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
+  top: calc(100% - 6px);  
+  right: 0;
   background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-  margin-top: 8px;
-  padding: 8px;
+  z-index: 9998;
+  padding-top: 0;
 }
+
+
+:host ::ng-deep .p-datepicker {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid #e0e0e0 !important;
+  background-color: white !important;
+  margin: 0 !important;
+  border-radius: 8px !important;
+  z-index: 9999 !important;
+  position: relative !important;
+}
+
+:host ::ng-deep .p-datepicker::before,
+:host ::ng-deep .p-datepicker::after {
+  content: none !important;
+  display: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
 
 /* Style the calendar component */
 :host ::ng-deep .p-calendar {

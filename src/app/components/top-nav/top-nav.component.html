@@ -31,17 +31,21 @@
       <button class="view-button active">Week</button>
       <button class="view-button">Day</button>
     </div>
-      <div class="date-navigation">
+      <div class="date-navigation" style="position: relative;">
       <button pButton icon="pi pi-chevron-left" class="p-button-text" (click)="previousWeek()"></button>
       <span class="date-range">{{ formatDateRange() }}</span>
       <button pButton icon="pi pi-chevron-right" class="p-button-text" (click)="nextWeek()"></button>
       <button pButton icon="pi pi-calendar" class="p-button-text" (click)="calendarVisible = !calendarVisible"></button>
-      <div *ngIf="calendarVisible" class="calendar-popup">
-        <p-calendar [(ngModel)]="selectedDate" 
-                   [inline]="true" 
-                   [showWeek]="true"
-                   (onSelect)="onDateSelect()"></p-calendar>
-      </div>
+
+      <div *ngIf="calendarVisible" class="calendar-wrapper">
+  <div class="calendar-popup">
+    <p-calendar [(ngModel)]="selectedDate" 
+                [inline]="true" 
+                [showWeek]="true"
+                (onSelect)="onDateSelect()"></p-calendar>
+  </div>
+</div>
+
     </div>
     
     <div class="hours-summary">
