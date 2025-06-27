@@ -46,6 +46,7 @@ export class TimesheetGridComponent implements OnInit {
   weekStartDate: Date = new Date(); // Default to today
   showTaskForm = false;
   selectedProject: any = null;
+  editingTask: any = null; // Add this property to track the task being edited
 
   constructor(
     private projectService: ProjectService,
@@ -173,45 +174,80 @@ export class TimesheetGridComponent implements OnInit {
   openTaskForm(project: any) {
       console.log('Opening task form with project:', project);
     this.selectedProject = project;
+    this.editingTask = null; // Clear any existing editing task
     this.showTaskForm = true;
   } 
 
+  editTask(project: any, task: any) {
+    console.log('Editing task:', task, 'in project:', project);
+    this.selectedProject = project;
+    this.editingTask = task; // Set the task to be edited
+    this.showTaskForm = true;
+  }
+
   handleTaskSave(taskData: any) {
     // Find the project by id
-     const selectedProject = this.projects.find(p => p.id === taskData.project.id);
+    const selectedProject = this.projects.find(p => p.id === taskData.project.id);
     
     if (selectedProject) {
       selectedProject.tasks = selectedProject.tasks || [];
       
-      // Create a new task with properly initialized hours object for all days
-      const newTask: Task = {
-        id: Date.now(), // Generate a unique ID
-        name: taskData.name,
-        description: taskData.description,
-        billable: taskData.billable,
-        status: taskData.status,
-        category: taskData.category,
-        hours: {} as { [day: string]: string }
-      };
-      
-      // Initialize hours for each day of the week
-      this.daysOfWeek.forEach(day => {
-        newTask.hours[day.day] = '00:00';
-      });
-      
-      // Add the new task to the project
-      selectedProject.tasks.push(newTask);
+      if (this.editingTask) {
+        // Update existing task
+        const taskIndex = selectedProject.tasks.findIndex(t => t.id === this.editingTask.id);
+        if (taskIndex !== -1) {
+          // Update the existing task while preserving the hours data and ID
+          selectedProject.tasks[taskIndex] = {
+            ...selectedProject.tasks[taskIndex], // Keep existing data like hours
+            name: taskData.name,
+            description: taskData.description,
+            billable: taskData.billable,
+            status: taskData.status,
+            category: taskData.category
+          };
+          
+          // Show success message for update
+          this.messageService.add({ 
+            severity: 'success', 
+            summary: 'Task Updated', 
+            detail: `Task "${taskData.name}" updated successfully`, 
+            life: 3000 
+          });
+        }
+      } else {
+        // Create a new task with properly initialized hours object for all days
+        const newTask: Task = {
+          id: Date.now(), // Generate a unique ID
+          name: taskData.name,
+          description: taskData.description,
+          billable: taskData.billable,
+          status: taskData.status,
+          category: taskData.category,
+          hours: {} as { [day: string]: string }
+        };
+        
+        // Initialize hours for each day of the week
+        this.daysOfWeek.forEach(day => {
+          newTask.hours[day.day] = '00:00';
+        });
+        
+        // Add the new task to the project
+        selectedProject.tasks.push(newTask);
+        
+        // Show success message for new task
+        this.messageService.add({ 
+          severity: 'success', 
+          summary: 'Task Added', 
+          detail: `Task "${newTask.name}" added to project "${selectedProject.name}"`, 
+          life: 3000 
+        });
+      }
       
       // Save the updated projects to localStorage
       this.projectService.saveProjects(this.projects);
       
-      // Show success message
-      this.messageService.add({ 
-        severity: 'success', 
-        summary: 'Task Added', 
-        detail: `Task "${newTask.name}" added to project "${selectedProject.name}"`, 
-        life: 3000 
-      });
+      // Clear the editing task
+      this.editingTask = null;
     }
   }
     // Method to update task hours - enhanced to ensure persistence

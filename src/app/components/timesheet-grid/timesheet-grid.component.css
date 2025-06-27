@@ -220,4 +220,15 @@ td.time-cell {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-weight: 600; /* Bold day names */
+  color: #333333;
+  font-size: 14px;
+}
+
+/* Style for the date part (small tag) */
+.day-header small {
+  font-weight: 400; /* Normal weight for dates */
+  color: #666666; /* Lighter color for dates */
+  font-size: 12px;
+  margin-top: 2px;
 }

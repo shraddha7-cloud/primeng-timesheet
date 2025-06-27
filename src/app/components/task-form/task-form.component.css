@@ -1,3 +1,21 @@
+/* Toast styling for bottom right corner */
+:host ::ng-deep .p-toast {
+  z-index: 10000 !important;
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  width: auto !important;
+}
+
+:host ::ng-deep .p-toast .p-toast-message {
+  margin: 0 !important;
+  min-width: 300px;
+  text-align: left;
+}
+
 .offcanvas-container {
   position: fixed;
   top: 0;
@@ -145,6 +163,16 @@
 .offcanvas-body li,
 .offcanvas-body ul {
   font-weight: normal;
+}
+
+/* Billability toggle labels styling - smaller font size */
+:host ::ng-deep .billable-label {
+  font-size: 0.3rem !important;
+  font-weight: 400;
+}
+
+:host ::ng-deep .p-inputswitch .billable-label {
+  font-size: 0.3rem !important;
 }
 
 /* Add this below your .btn-outline-secondary class */

@@ -52,7 +52,8 @@
       <!-- Task Name with Pencil -->
       <td class="whitespace-nowrap">
         <div class="flex items-center gap-2">
-          <i class="pi pi-pencil text-gray-500 text-sm cursor-pointer"></i>
+          <i class="pi pi-pencil text-gray-500 text-sm cursor-pointer" 
+             (click)="editTask(project, task)"></i>
           <span class="truncate">{{ task.name }}</span>
         </div>
       </td>  
@@ -89,8 +90,8 @@
 
 </p-table> 
 
-<app-task-form [visible]="showTaskForm" [availableProjects]="projects" [currentProject]="selectedProject"
-  (close)=" showTaskForm = false" (save)="handleTaskSave($event)">
+<app-task-form [visible]="showTaskForm" [availableProjects]="projects" [currentProject]="selectedProject" 
+  [editingTask]="editingTask" (close)="showTaskForm = false" (save)="handleTaskSave($event)">
 </app-task-form>
 
 <!-- 

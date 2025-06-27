@@ -125,7 +125,7 @@
   min-width: 300px;
 }
 
-:host ::ng-deep .p-datepicker .p-datepicker-header {
+:host ::ng-deep .p-datepicker  .p-datepicker-header {
   padding: 0.5rem;
   background-color: #f8f9fa;
   border-bottom: 1px solid #e9ecef;
@@ -140,12 +140,27 @@
 }
 
 :host ::ng-deep .p-datepicker table td > span.p-highlight {
-  background-color: #2196F3;
+  background-color: #e2e7ec;
+  color: white !important;
 }
 
 :host ::ng-deep .p-datepicker table td.p-datepicker-today > span {
-  border-color: #2196F3;
-  color: #2196F3;
+  border-color: #000305;
+  color: #0a0a0a;
+}
+
+/* Ensure selected date text is always white and visible */
+:host ::ng-deep .p-datepicker table td > span.p-highlight {
+  background-color: #e3eef7 !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+/* Make sure today's date that is also selected shows white text */
+:host ::ng-deep .p-datepicker table td.p-datepicker-today > span.p-highlight {
+  background-color: #2196F3 !important;
+  color: white !important;
+  border-color: #2196F3 !important;
 }
 
 .hours-summary {

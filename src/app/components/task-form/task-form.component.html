@@ -1,4 +1,4 @@
-<p-toast position="top-right"></p-toast>
+<p-toast position="bottom-right"></p-toast>
 
 <div class="offcanvas-container" *ngIf="visible">
   <!-- Backdrop -->
@@ -7,7 +7,7 @@
   <!-- Offcanvas -->
   <div class="offcanvas offcanvas-end show">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title">New Task</h5>
+      <h5 class="offcanvas-title">{{ editingTask ? 'Edit Task' : 'New Task' }}</h5>
       <button type="button" class="btn-close text-reset" (click)="onClose()"></button>
     </div>
     <div class="offcanvas-body">      <form #taskForm="ngForm" (ngSubmit)="taskForm.form.valid && saveTask()" class="needs-validation" novalidate>
@@ -54,8 +54,9 @@
             <label for="billable" class="form-label">Billability <span class="text-danger">*</span></label>
             <select class="form-select" id="billable" [(ngModel)]="task.billable" name="billable" required #billableModel="ngModel"
                    [class.is-invalid]="billableModel.invalid && (billableModel.dirty || billableModel.touched || taskForm.submitted)">
-              <option [ngValue]="false">Non-Billable</option>
-              <option [ngValue]="true">Billable</option>
+              <option value="" disabled selected>Select Billability</option>
+              <option value="false">Non-Billable</option>
+              <option value="true">Billable</option>
             </select>
             <div *ngIf="billableModel.invalid && (billableModel.dirty || billableModel.touched || taskForm.submitted)" class="text-danger mt-1">
               <small *ngIf="billableModel.errors?.['required']">Billability is required</small>
@@ -86,22 +87,11 @@
         <div class="mb-3">
           <label for="comment" class="form-label">Comment</label>
           <textarea class="form-control" id="comment" rows="3" [(ngModel)]="task.comment" name="comment"></textarea>
-        </div>        <!-- Validation Summary -->
-        <div *ngIf="taskForm.submitted && taskForm.invalid" class="alert alert-danger mb-3">
-          <p class="mb-0">Please correct the following errors:</p>
-          <ul class="mb-0 ps-3 mt-1">
-            <li *ngIf="projectModel?.errors?.['required']">Project is required</li>
-            <li *ngIf="categoryModel?.errors?.['required']">Task Category is required</li>
-            <li *ngIf="taskNameModel?.errors?.['required']">Task Name is required</li>
-            <li *ngIf="billableModel?.errors?.['required']">Billability is required</li>
-            <li *ngIf="statusModel?.errors?.['required']">Task Status is required</li>
-          </ul>
-        </div>
-        
+        </div>        
         <!-- Buttons -->
         <div class="d-flex justify-content-end gap-2">
           <button type="button" class="btn btn-outline-secondary" (click)="onClose()">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update Task' : 'Save Task' }}</button>
         </div>
       </form>
     </div>
